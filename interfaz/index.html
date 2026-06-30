@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agente Pulse 14 - Subida de imágenes</title>
+  <link rel="stylesheet" href="/interfaz/estilos.css" />
+</head>
+<body>
+<header>
+  <h1>Agente Pulse 14</h1>
+  <p>Biblioteca de imágenes para crear un dibujo técnico</p>
+</header>
+
+<main>
+  <div class="layout">
+    <section class="panel">
+      <h2>Imágenes de referencia</h2>
+      <label class="file-label" for="fileInput">Seleccionar una o varias imágenes</label>
+      <input id="fileInput" type="file" accept="image/*" multiple />
+
+      <div class="summary">
+        <div><b id="countImages">0</b><span>Imágenes cargadas</span></div>
+        <div id="totalBox" class="total-warn"><b id="totalPercent">0%</b><span>Total asignado</span></div>
+        <div><b id="freePercent">100%</b><span>Pendiente</span></div>
+        <div><b id="usedImages">0</b><span>Imágenes usadas</span></div>
+      </div>
+
+      <div id="gallery" class="gallery"></div>
+
+      <div class="notice">
+        Introduce el porcentaje de forma numérica. La suma total no puede superar el 100%.
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Visualización</h2>
+      <div id="viewer" class="viewer">
+        <div class="empty" id="emptyViewer">Sube una o varias imágenes para verlas aquí</div>
+        <img id="mainImage" alt="Imagen seleccionada" />
+        <span class="zoom-label" id="zoomLabel">Zoom 100%</span>
+      </div>
+      <div class="viewer-tools">
+        <span>Rueda: zoom</span>
+        <span>Botón derecho: mover</span>
+        <span>Doble clic: ajustar</span>
+        <span>Todas se muestran al mismo tamaño inicial</span>
+      </div>
+    </section>
+
+    <aside class="panel props">
+      <h2>Imagen seleccionada</h2>
+      <dl>
+        <div><dt>Nombre</dt><dd id="pName">—</dd></div>
+        <div><dt>Resolución</dt><dd id="pRes">—</dd></div>
+        <div><dt>Tamaño</dt><dd id="pSize">—</dd></div>
+        <div><dt>Tipo</dt><dd id="pType">—</dd></div>
+        <div><dt>Aportación al dibujo</dt><dd id="pPercent">—</dd></div>
+      </dl>
+
+      <button id="createBtn" class="btn" disabled>Validar imágenes</button>
+      <div id="status" class="status">Para continuar, el total de porcentajes debe ser exactamente 100%.</div>
+    </aside>
+  </div>
+</main>
+
+<script src="/interfaz/app.js"></script>
+</body>
+</html>
