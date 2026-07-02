@@ -1,69 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Agente Pulse 14 - Subida de imágenes</title>
-  <link rel="stylesheet" href="/interfaz/estilos.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agente Pulse 14 - Preparación IA</title>
+<link rel="stylesheet" href="/interfaz/estilos.css">
 </head>
 <body>
-<header>
-  <h1>Agente Pulse 14</h1>
-  <p>Biblioteca de imágenes para crear un dibujo técnico</p>
-</header>
+<main class="page">
+  <section class="panel">
+    <h1>Agente Pulse 14 - Imágenes de referencia</h1>
+    <label class="file" for="fileInput">Seleccionar una o varias imágenes</label>
+    <input id="fileInput" type="file" accept="image/*" multiple>
+    <div class="stats">
+      <div class="stat"><b id="countImages">0</b><span>Imágenes cargadas</span></div>
+      <div class="stat"><b id="totalPercent">0%</b><span>Total asignado</span></div>
+      <div class="stat"><b id="freePercent">100%</b><span>Pendiente</span></div>
+      <div class="stat"><b id="usedImages">0</b><span>Imágenes usadas</span></div>
+    </div>
+    <div id="gallery" class="list"></div>
+    <div class="note">Al subir imágenes, el porcentaje se reparte automáticamente a partes iguales. Después puedes ajustarlo manualmente.</div>
+  </section>
 
-<main>
-  <div class="layout">
-    <section class="panel">
-      <h2>Imágenes de referencia</h2>
-      <label class="file-label" for="fileInput">Seleccionar una o varias imágenes</label>
-      <input id="fileInput" type="file" accept="image/*" multiple />
-
-      <div class="summary">
-        <div><b id="countImages">0</b><span>Imágenes cargadas</span></div>
-        <div id="totalBox" class="total-warn"><b id="totalPercent">0%</b><span>Total asignado</span></div>
-        <div><b id="freePercent">100%</b><span>Pendiente</span></div>
-        <div><b id="usedImages">0</b><span>Imágenes usadas</span></div>
-      </div>
-
-      <div id="gallery" class="gallery"></div>
-
-      <div class="notice">
-        Introduce el porcentaje de forma numérica. La suma total no puede superar el 100%.
-      </div>
-    </section>
-
-    <section class="panel">
+  <section>
+    <div class="panel">
       <h2>Visualización</h2>
       <div id="viewer" class="viewer">
-        <div class="empty" id="emptyViewer">Sube una o varias imágenes para verlas aquí</div>
-        <img id="mainImage" alt="Imagen seleccionada" />
-        <span class="zoom-label" id="zoomLabel">Zoom 100%</span>
+        <div id="emptyViewer" class="empty">Sube una o varias imágenes para verlas aquí</div>
+        <img id="mainImage" alt="Imagen seleccionada">
+        <span id="zoomLabel" class="zoom">Zoom 100%</span>
       </div>
-      <div class="viewer-tools">
-        <span>Rueda: zoom</span>
-        <span>Botón derecho: mover</span>
-        <span>Doble clic: ajustar</span>
-        <span>Todas se muestran al mismo tamaño inicial</span>
+      <div class="help"><span>Rueda: zoom</span><span>Botón derecho: mover</span><span>Doble clic: ajustar</span><span>Todas se muestran al mismo tamaño inicial</span></div>
+    </div>
+
+    <div class="panel ai-box">
+      <h2>Preparación del paquete IA</h2>
+      <div class="grid2">
+        <div class="field"><label>Motor IA</label><select id="modelo"><option value="motor_pulse14">Motor Pulse14 preparado</option><option value="pendiente">Pendiente de proveedor IA externo</option></select></div>
+        <div class="field"><label>Estilo de dibujo</label><select id="estilo"><option value="ilustracion_tecnica_bordado">Ilustración técnica para bordado</option><option value="ornamental_vectorial">Ornamental vectorial limpio</option><option value="linea_y_color_plano">Línea y color plano</option></select></div>
+        <div class="field"><label>Nivel de detalle</label><select id="detalle"><option value="bajo">Bajo</option><option value="medio" selected>Medio</option><option value="alto">Alto</option></select></div>
+        <div class="field"><label>Paleta objetivo máxima</label><input id="paleta" type="number" min="2" max="64" value="15"></div>
       </div>
-    </section>
+      <div class="field"><label>Instrucciones adicionales opcionales</label><textarea id="instrucciones" placeholder="Ej: mantener simetría central, sin degradados, contornos cerrados, líneas finas..."></textarea></div>
+      <div class="note">Este módulo prepara y envía al servidor las imágenes, porcentajes e instrucciones para crear el paquete que usará el motor IA.</div>
+      <button id="prepareBtn" class="btn green" disabled>Crear imagen con IA</button>
+    </div>
+  </section>
 
-    <aside class="panel props">
-      <h2>Imagen seleccionada</h2>
-      <dl>
-        <div><dt>Nombre</dt><dd id="pName">—</dd></div>
-        <div><dt>Resolución</dt><dd id="pRes">—</dd></div>
-        <div><dt>Tamaño</dt><dd id="pSize">—</dd></div>
-        <div><dt>Tipo</dt><dd id="pType">—</dd></div>
-        <div><dt>Aportación al dibujo</dt><dd id="pPercent">—</dd></div>
-      </dl>
+  <aside class="panel">
+    <h2>Imagen seleccionada</h2>
+    <dl class="props">
+      <div><dt>Nombre</dt><dd id="pName">—</dd></div>
+      <div><dt>Resolución</dt><dd id="pRes">—</dd></div>
+      <div><dt>Tamaño</dt><dd id="pSize">—</dd></div>
+      <div><dt>Tipo</dt><dd id="pType">—</dd></div>
+      <div><dt>Aportación al dibujo</dt><dd id="pPercent">—</dd></div>
+    </dl>
+    <button id="validateBtn" class="btn secondary">Comprobar porcentajes</button>
+    <div id="status" class="note">Para continuar, el total de porcentajes debe ser exactamente 100%.</div>
 
-      <button id="createBtn" class="btn" disabled>Validar imágenes</button>
-      <div id="status" class="status">Para continuar, el total de porcentajes debe ser exactamente 100%.</div>
-    </aside>
-  </div>
+    <h2 class="mt">Resumen IA</h2>
+    <dl class="summary">
+      <div><dt>Imágenes usadas</dt><dd id="sumUsed">0</dd></div>
+      <div><dt>Suma de porcentajes</dt><dd id="sumPercent">0%</dd></div>
+      <div><dt>Paleta objetivo</dt><dd id="sumPalette">15 colores</dd></div>
+      <div><dt>Estado</dt><dd id="sumStatus">Pendiente</dd></div>
+    </dl>
+
+    <h2 class="mt">Paquete generado</h2>
+    <div id="packageBox" class="generated">Aún no se ha preparado ningún paquete IA.</div>
+    <button id="downloadPromptBtn" class="btn secondary" disabled>Descargar prompt</button>
+  </aside>
 </main>
-
 <script src="/interfaz/app.js"></script>
 </body>
 </html>

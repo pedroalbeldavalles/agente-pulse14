@@ -1,82 +1,91 @@
 from __future__ import annotations
 
-import json
-from pathlib import Path
-from typing import List
-
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from PIL import Image
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-INTERFAZ_DIR = BASE_DIR / "interfaz"
+from modulos.motor_pulse14 import crear_paquete_ia
 
-app = FastAPI(title="Agente Pulse 14", version="0.1.0")
-app.mount("/interfaz", StaticFiles(directory=str(INTERFAZ_DIR)), name="interfaz")
+aplicacion = FastAPI(title="Agente Pulse 14", version="1.2.0")
+aplicacion.mount("/interfaz", StaticFiles(directory="interfaz"), name="interfaz")
 
 
-@app.get("/")
+@aplicacion.get("/")
 def inicio():
-    return FileResponse(INTERFAZ_DIR / "index.html")
+    return FileResponse("interfaz/index.html")
 
 
-@app.get("/api/estado")
-def estado():
-    return {"ok": True, "modulo": "subida-porcentajes", "version": "v2"}
+@aplicacion.get("/api/salud")
+def salud():
+    return {"ok": True, "modulo": "agente-pulse14-modulo-1-preparacion-ia"}
 
 
-@app.post("/api/validar-imagenes")
-async def validar_imagenes(
-    imagenes: List[UploadFile] = File(...),
-    porcentajes_json: str = Form(...),
-):
+def _parse_porcentajes(texto: str) -> list[int]:
     try:
-        porcentajes = json.loads(porcentajes_json)
-    except json.JSONDecodeError as exc:
-        raise HTTPException(status_code=400, detail="Los porcentajes no tienen formato JSON válido.") from exc
+        valores = [int(x.strip()) for x in texto.split(",") if x.strip() != ""]
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="Los porcentajes deben ser números enteros separados por coma.") from exc
+    return valores
 
-    if not isinstance(porcentajes, list):
-        raise HTTPException(status_code=400, detail="Los porcentajes deben enviarse como una lista.")
 
-    if len(imagenes) != len(porcentajes):
-        raise HTTPException(status_code=400, detail="Debe existir un porcentaje por cada imagen.")
-
-    total = 0
-    for valor in porcentajes:
-        if not isinstance(valor, int):
-            raise HTTPException(status_code=400, detail="Cada porcentaje debe ser un número entero.")
-        if valor < 0 or valor > 100:
-            raise HTTPException(status_code=400, detail="Cada porcentaje debe estar entre 0 y 100.")
-        total += valor
-
-    if total != 100:
+@aplicacion.post("/api/validar-imagenes")
+async def validar_imagenes(
+    imagenes: list[UploadFile] = File(...),
+    porcentajes: str = Form(...),
+):
+    valores = _parse_porcentajes(porcentajes)
+    if len(imagenes) != len(valores):
+        raise HTTPException(status_code=400, detail="El número de imágenes y porcentajes no coincide.")
+    if sum(valores) != 100:
         raise HTTPException(status_code=400, detail="La suma de porcentajes debe ser exactamente 100%.")
+    if any(v < 0 or v > 100 for v in valores):
+        raise HTTPException(status_code=400, detail="Cada porcentaje debe estar entre 0 y 100%.")
 
-    informe = []
-    for imagen, porcentaje in zip(imagenes, porcentajes):
+    usadas = []
+    for imagen, porcentaje in zip(imagenes, valores):
+        if porcentaje <= 0:
+            continue
         if not imagen.content_type or not imagen.content_type.startswith("image/"):
             raise HTTPException(status_code=400, detail=f"{imagen.filename} no es una imagen válida.")
-        contenido = await imagen.read()
-        if not contenido:
-            raise HTTPException(status_code=400, detail=f"{imagen.filename} está vacía.")
-        try:
-            from io import BytesIO
-            img = Image.open(BytesIO(contenido))
-            ancho, alto = img.size
-        except Exception as exc:
-            raise HTTPException(status_code=400, detail=f"No se pudo leer {imagen.filename} como imagen.") from exc
-        informe.append({
-            "nombre": imagen.filename,
-            "tipo": imagen.content_type,
-            "tamano_bytes": len(contenido),
-            "resolucion": {"ancho": ancho, "alto": alto},
-            "porcentaje": porcentaje,
-        })
+        usadas.append({"nombre": imagen.filename, "porcentaje": porcentaje, "tipo": imagen.content_type})
 
-    return {
-        "ok": True,
-        "mensaje": "Imágenes y porcentajes validados correctamente.",
-        "total_porcentaje": total,
-        "imagenes": informe,
-    }
+    return {"ok": True, "imagenes_usadas": usadas, "porcentaje_total": sum(valores)}
+
+
+@aplicacion.post("/api/preparar-paquete-ia")
+async def preparar_paquete_ia(
+    imagenes: list[UploadFile] = File(...),
+    porcentajes: str = Form(...),
+    modelo: str = Form("pendiente"),
+    estilo: str = Form("ilustracion_tecnica_bordado"),
+    detalle: str = Form("medio"),
+    paleta_colores: int = Form(15),
+    instrucciones: str = Form(""),
+):
+    valores = _parse_porcentajes(porcentajes)
+    if len(imagenes) != len(valores):
+        raise HTTPException(status_code=400, detail="El número de imágenes y porcentajes no coincide.")
+    if sum(valores) != 100:
+        raise HTTPException(status_code=400, detail="La suma de porcentajes debe ser exactamente 100%.")
+
+    archivos = []
+    for imagen in imagenes:
+        data = await imagen.read()
+        archivos.append((imagen.filename or "imagen", imagen.content_type or "", data))
+
+    try:
+        paquete = crear_paquete_ia(
+            archivos=archivos,
+            porcentajes=valores,
+            modelo=modelo,
+            estilo=estilo,
+            detalle=detalle,
+            paleta_colores=max(2, min(64, int(paleta_colores))),
+            instrucciones=instrucciones or "",
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Error preparando paquete IA: {exc}") from exc
+
+    return paquete
