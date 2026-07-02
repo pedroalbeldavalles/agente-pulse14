@@ -7,10 +7,6 @@ from fastapi.staticfiles import StaticFiles
 from modulos.motor_pulse14 import crear_paquete_ia
 
 aplicacion = FastAPI(title="Agente Pulse 14", version="1.2.0")
-
-# Alias necesario para Hugging Face / Uvicorn cuando arranca con servidor.aplicacion:app
-app = aplicacion
-
 aplicacion.mount("/interfaz", StaticFiles(directory="interfaz"), name="interfaz")
 
 
