@@ -1,23 +1,12 @@
-Repositorio final validado para restaurar Agente Pulse 14
+REPOSITORIO AGENTE PULSE14 - RESTAURACIÓN FUNCIONAL V10
 
-Contenido:
+Incluye los archivos validados para recuperar:
+- Reparto automático de porcentajes al subir imágenes.
+- Un único botón Crear imagen con IA.
+- Llamada a /api/preparar-paquete-ia.
+- Backend FastAPI correcto.
+- Dockerfile para Hugging Face Spaces.
+- GitHub Actions para sincronizar con Hugging Face.
 
-.github/workflows/sync-to-huggingface.yml
-.gitattributes
-.gitignore
-Dockerfile
-README.md
-README_MODULO_1.md
-app.py
-requirements.txt
-interfaz/index.html
-servidor/__init__.py
-servidor/aplicacion.py
-modulos/__init__.py
-modulos/motor_pulse14.py
-
-Notas:
-- La interfaz visible debe mostrar: Agente Pulse 14 - V9 Motor IA.
-- Debe existir un único botón: Crear imagen con IA.
-- Al subir imágenes, los porcentajes se reparten automáticamente hasta sumar 100%.
-- GitHub Actions sincroniza con el Space: Pedroalbeldavalles/Agente-Pulse14.
+Copiar el contenido de esta carpeta dentro del repositorio local agente-pulse14.
+Después hacer Commit y Push origin desde GitHub Desktop.

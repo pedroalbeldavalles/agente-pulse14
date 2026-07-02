@@ -34,7 +34,7 @@ jobs:
           api = HfApi(token=token)
           api.upload_folder(
               folder_path=".",
-              repo_id="Pedroalbeldavalles/Agente-Pulse14",
+              repo_id="Pedroalbeldavalles/agente-pulse14",
               repo_type="space",
               ignore_patterns=[
                   ".git/*",
