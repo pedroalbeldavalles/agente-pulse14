@@ -1,18 +1,11 @@
-# \---
-
-# title: Agente Pulse 14
-
-# emoji: 🧵
-
-# colorFrom: blue
-
-# colorTo: indigo
-
-# sdk: docker
-
-# app\_file: app.py
-
-# pinned: false
+﻿---
+title: Agente Pulse 14
+emoji: 🧵
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_file: app.py
+pinned: false
 
 # \---Agente Pulse 14 - Módulo 1 Preparación IA v4
 
@@ -51,4 +44,5 @@ uvicorn app:aplicacion --host 0.0.0.0 --port 7860
 ```
 
 Si el Space sigue mostrando el interfaz antiguo, revisa que hayas reemplazado `interfaz/index.html`, `interfaz/app.js`, `servidor/aplicacion.py`, `modulos/motor\\\_pulse14.py` y que exista `app.py` en la raíz.
+
 
