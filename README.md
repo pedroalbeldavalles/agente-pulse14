@@ -1,5 +1,5 @@
 ---
-title: Agente Pulse 14
+title: Motor Pulse14 Nucleo
 emoji: 🧵
 colorFrom: blue
 colorTo: indigo
@@ -8,6 +8,14 @@ app_file: app.py
 pinned: false
 ---
 
-# Agente Pulse 14
+# Motor Pulse14 Núcleo v1
 
-Módulo de preparación IA para Pulse 14.
+Proyecto preparado para Hugging Face Spaces.
+
+Funciones:
+- Crear proyecto Pulse14.
+- Subir imágenes.
+- Guardar imágenes en carpeta de proyecto.
+- Crear `project.json`.
+- Crear estado inicial del Cerebro.
+- Generar paquete IA técnico para revisión.
