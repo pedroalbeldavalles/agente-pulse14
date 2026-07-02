@@ -1,5 +1,5 @@
 ---
-title: Agente Pulse 14
+title: Agente Pulse 14 V7
 emoji: 🧵
 colorFrom: blue
 colorTo: indigo

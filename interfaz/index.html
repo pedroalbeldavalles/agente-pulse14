@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agente Pulse 14 - Preparación IA</title>
-<link rel="stylesheet" href="/interfaz/estilos.css">
+<title>Agente Pulse 14 - Preparación IA V7</title>
+<link rel="stylesheet" href="/interfaz/estilos.css?v=7">
 </head>
 <body>
+<header class="topbar">
+  <h1>Agente Pulse 14 - V7 Preparación IA</h1>
+  <p>Subida de imágenes, reparto automático de porcentajes y envío al Motor IA</p>
+</header>
 <main class="page">
   <section class="panel">
-    <h1>Agente Pulse 14 - Imágenes de referencia</h1>
+    <h1>Imágenes de referencia</h1>
     <label class="file" for="fileInput">Seleccionar una o varias imágenes</label>
     <input id="fileInput" type="file" accept="image/*" multiple>
     <div class="stats">
@@ -19,7 +23,7 @@
       <div class="stat"><b id="usedImages">0</b><span>Imágenes usadas</span></div>
     </div>
     <div id="gallery" class="list"></div>
-    <div class="note">Al subir imágenes, el porcentaje se reparte automáticamente a partes iguales. Después puedes ajustarlo manualmente.</div>
+    <div class="note">Versión V7: al subir imágenes, el 100% se reparte automáticamente entre todas las imágenes.</div>
   </section>
 
   <section>
@@ -30,11 +34,11 @@
         <img id="mainImage" alt="Imagen seleccionada">
         <span id="zoomLabel" class="zoom">Zoom 100%</span>
       </div>
-      <div class="help"><span>Rueda: zoom</span><span>Botón derecho: mover</span><span>Doble clic: ajustar</span><span>Todas se muestran al mismo tamaño inicial</span></div>
+      <div class="help"><span>Rueda: zoom</span><span>Botón derecho: mover</span><span>Doble clic: ajustar</span></div>
     </div>
 
     <div class="panel ai-box">
-      <h2>Preparación del paquete IA</h2>
+      <h2>Motor IA</h2>
       <div class="grid2">
         <div class="field"><label>Motor IA</label><select id="modelo"><option value="motor_pulse14">Motor Pulse14 preparado</option><option value="pendiente">Pendiente de proveedor IA externo</option></select></div>
         <div class="field"><label>Estilo de dibujo</label><select id="estilo"><option value="ilustracion_tecnica_bordado">Ilustración técnica para bordado</option><option value="ornamental_vectorial">Ornamental vectorial limpio</option><option value="linea_y_color_plano">Línea y color plano</option></select></div>
@@ -42,7 +46,6 @@
         <div class="field"><label>Paleta objetivo máxima</label><input id="paleta" type="number" min="2" max="64" value="15"></div>
       </div>
       <div class="field"><label>Instrucciones adicionales opcionales</label><textarea id="instrucciones" placeholder="Ej: mantener simetría central, sin degradados, contornos cerrados, líneas finas..."></textarea></div>
-      <div class="note">Este módulo prepara y envía al servidor las imágenes, porcentajes e instrucciones para crear el paquete que usará el motor IA.</div>
       <button id="prepareBtn" class="btn green" disabled>Crear imagen con IA</button>
     </div>
   </section>
@@ -57,6 +60,7 @@
       <div><dt>Aportación al dibujo</dt><dd id="pPercent">—</dd></div>
     </dl>
     <button id="validateBtn" class="btn secondary">Comprobar porcentajes</button>
+    <button id="prepareBtnSide" class="btn green" disabled>Crear imagen con IA</button>
     <div id="status" class="note">Para continuar, el total de porcentajes debe ser exactamente 100%.</div>
 
     <h2 class="mt">Resumen IA</h2>
@@ -72,6 +76,120 @@
     <button id="downloadPromptBtn" class="btn secondary" disabled>Descargar prompt</button>
   </aside>
 </main>
-<script src="/interfaz/app.js?v=6"></script>
+<script>
+const fileInput=document.getElementById('fileInput');
+const gallery=document.getElementById('gallery');
+const mainImage=document.getElementById('mainImage');
+const emptyViewer=document.getElementById('emptyViewer');
+const viewer=document.getElementById('viewer');
+const zoomLabel=document.getElementById('zoomLabel');
+const countImages=document.getElementById('countImages');
+const totalPercent=document.getElementById('totalPercent');
+const freePercent=document.getElementById('freePercent');
+const usedImages=document.getElementById('usedImages');
+const validateBtn=document.getElementById('validateBtn');
+const prepareBtn=document.getElementById('prepareBtn');
+const statusEl=document.getElementById('status');
+const sumUsed=document.getElementById('sumUsed');
+const sumPercent=document.getElementById('sumPercent');
+const sumPalette=document.getElementById('sumPalette');
+const sumStatus=document.getElementById('sumStatus');
+const packageBox=document.getElementById('packageBox');
+const downloadPromptBtn=document.getElementById('downloadPromptBtn');
+const modelo=document.getElementById('modelo');
+const estilo=document.getElementById('estilo');
+const detalle=document.getElementById('detalle');
+const paleta=document.getElementById('paleta');
+const instrucciones=document.getElementById('instrucciones');
+const pName=document.getElementById('pName');
+const pRes=document.getElementById('pRes');
+const pSize=document.getElementById('pSize');
+const pType=document.getElementById('pType');
+const pPercent=document.getElementById('pPercent');
+
+let images=[];
+let selectedId=null;
+let lastPrompt='';
+let scale=1,minScale=1,x=0,y=0,drag=false,lastX=0,lastY=0;
+
+function uid(){return crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random())}
+function fmtSize(bytes){if(bytes<1024)return bytes+' B'; if(bytes<1048576)return (bytes/1024).toFixed(1)+' KB'; return (bytes/1048576).toFixed(2)+' MB'}
+function total(){return images.reduce((s,i)=>s+Number(i.percent||0),0)}
+function totalExcept(id){return images.reduce((s,i)=>s+(i.id===id?0:Number(i.percent||0)),0)}
+function equalDistribution(n){if(!n)return [];const base=Math.floor(100/n);const rest=100-(base*n);return Array.from({length:n},(_,i)=>base+(i<rest?1:0))}
+function redistributeEqual(){const vals=equalDistribution(images.length);images.forEach((img,i)=>{img.percent=vals[i]||0})}
+function addFilesWithEqualDefault(files){files.forEach(file=>{const url=URL.createObjectURL(file);const item={id:uid(),file,url,name:file.name,size:file.size,type:file.type||'imagen',w:0,h:0,percent:0};const img=new Image();img.onload=()=>{item.w=img.naturalWidth;item.h=img.naturalHeight;render();if(!selectedId)selectImage(item.id)};img.src=url;images.push(item)});redistributeEqual();render();if(images.length&&!selectedId)selectImage(images[0].id)}
+
+fileInput.addEventListener('change',()=>{
+  const files=[...fileInput.files];
+  if(!files.length)return;
+  addFilesWithEqualDefault(files);
+  fileInput.value='';
+});
+
+function setPercent(id,value){
+  const img=images.find(i=>i.id===id); if(!img)return;
+  let val=parseInt(value,10); if(isNaN(val))val=0;
+  val=Math.max(0,Math.min(100,val));
+  const available=100-totalExcept(id);
+  if(val>available)val=available;
+  img.percent=val;
+  render();
+  if(selectedId===id)showProps(img);
+}
+function deleteImage(id){
+  const idx=images.findIndex(i=>i.id===id); if(idx<0)return;
+  URL.revokeObjectURL(images[idx].url);
+  images.splice(idx,1);
+  if(images.length)redistributeEqual();
+  if(selectedId===id)selectedId=images[0]?.id||null;
+  render();
+  if(selectedId)selectImage(selectedId); else clearViewer();
+}
+function render(){
+  gallery.innerHTML='';
+  images.forEach(img=>{
+    const row=document.createElement('div'); row.className='item'+(img.id===selectedId?' active':'');
+    row.onclick=e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON')return;selectImage(img.id)};
+    const thumb=document.createElement('div'); thumb.className='thumb'; const im=document.createElement('img'); im.src=img.url; thumb.appendChild(im);
+    const info=document.createElement('div'); const name=document.createElement('div'); name.className='name'; name.textContent=img.name; const meta=document.createElement('div'); meta.className='meta'; meta.textContent=(img.w?`${img.w} × ${img.h}`:'Cargando...')+' · '+fmtSize(img.size); info.append(name,meta);
+    const pct=document.createElement('div'); pct.className='pct'; const input=document.createElement('input'); input.type='number'; input.min='0'; input.max='100'; input.step='1'; input.value=img.percent; input.oninput=()=>setPercent(img.id,input.value); input.onchange=()=>setPercent(img.id,input.value); pct.append(input,document.createTextNode('%'));
+    const del=document.createElement('button'); del.className='del'; del.textContent='×'; del.onclick=()=>deleteImage(img.id);
+    row.append(thumb,info,pct,del); gallery.appendChild(row);
+  });
+  const t=total();
+  countImages.textContent=images.length; totalPercent.textContent=t+'%'; freePercent.textContent=(100-t)+'%'; usedImages.textContent=images.filter(i=>i.percent>0).length;
+  sumUsed.textContent=images.filter(i=>i.percent>0).length; sumPercent.textContent=t+'%'; sumPalette.textContent=paleta.value+' colores';
+  const ready=t===100 && images.length>0;
+  validateBtn.disabled=!ready; prepareBtn.disabled=!ready;
+  sumStatus.textContent=ready?'Listo':'Pendiente';
+  statusEl.textContent=ready?'Listo. Puedes crear la imagen con IA.':'Para continuar, el total de porcentajes debe ser exactamente 100%.';
+  statusEl.className='note '+(ready?'ok':'');
+}
+function selectImage(id){const img=images.find(i=>i.id===id); if(!img)return; selectedId=id; mainImage.src=img.url; mainImage.style.display='block'; emptyViewer.style.display='none'; mainImage.onload=fitImage; showProps(img); render()}
+function showProps(img){pName.textContent=img.name;pRes.textContent=img.w?`${img.w} × ${img.h}`:'—';pSize.textContent=fmtSize(img.size);pType.textContent=img.type;pPercent.textContent=img.percent+'%'}
+function clearViewer(){mainImage.removeAttribute('src');mainImage.style.display='none';emptyViewer.style.display='flex';pName.textContent=pRes.textContent=pSize.textContent=pType.textContent=pPercent.textContent='—'}
+function fitImage(){const img=images.find(i=>i.id===selectedId); if(!img||!img.w)return; const r=viewer.getBoundingClientRect(); minScale=Math.min((r.width-40)/img.w,(r.height-40)/img.h); scale=minScale; x=(r.width-img.w*scale)/2; y=(r.height-img.h*scale)/2; applyTransform()}
+function applyTransform(){mainImage.style.transform=`translate(${x}px, ${y}px) scale(${scale})`; zoomLabel.textContent='Zoom '+Math.round((scale/minScale)*100)+'%'}
+viewer.addEventListener('wheel',e=>{if(!mainImage.src)return;e.preventDefault();const r=viewer.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;const old=scale;const factor=e.deltaY<0?1.14:1/1.14;scale=Math.max(minScale,Math.min(20*minScale,scale*factor));x=mx-(mx-x)*(scale/old);y=my-(my-y)*(scale/old);applyTransform()},{passive:false});
+viewer.addEventListener('contextmenu',e=>e.preventDefault());
+viewer.addEventListener('mousedown',e=>{if(e.button!==2||!mainImage.src)return;drag=true;lastX=e.clientX;lastY=e.clientY});
+window.addEventListener('mousemove',e=>{if(!drag)return;x+=e.clientX-lastX;y+=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;applyTransform()});
+window.addEventListener('mouseup',()=>drag=false); viewer.addEventListener('dblclick',fitImage);
+
+function buildFormData(){const fd=new FormData();images.forEach(img=>fd.append('imagenes',img.file,img.name));fd.append('porcentajes',images.map(i=>i.percent).join(','));fd.append('modelo',modelo.value);fd.append('estilo',estilo.value);fd.append('detalle',detalle.value);fd.append('paleta_colores',paleta.value);fd.append('instrucciones',instrucciones.value||'');return fd}
+async function postJson(url,fd){const res=await fetch(url,{method:'POST',body:fd});const data=await res.json().catch(()=>({detail:'Respuesta no válida del servidor'}));if(!res.ok)throw new Error(data.detail||'Error del servidor');return data}
+validateBtn.addEventListener('click',async()=>{try{statusEl.textContent='Validando imágenes en servidor...';const data=await postJson('/api/validar-imagenes',buildFormData());statusEl.textContent=`Validación correcta: ${data.imagenes_usadas.length} imágenes usadas, total ${data.porcentaje_total}%.`;statusEl.className='note ok'}catch(e){statusEl.textContent='Error: '+e.message;statusEl.className='note bad'}});
+prepareBtn.addEventListener('click',async()=>{try{packageBox.textContent='Enviando imágenes y porcentajes al servidor para preparar el motor IA...';const data=await postJson('/api/preparar-paquete-ia',buildFormData());lastPrompt=data.prompt||'';downloadPromptBtn.disabled=!lastPrompt;packageBox.textContent=JSON.stringify({mensaje:data.mensaje,resumen:data.resumen,prompt:data.prompt},null,2);sumStatus.textContent='Enviado a IA'}catch(e){packageBox.textContent='Error: '+e.message;sumStatus.textContent='Error'}});
+downloadPromptBtn.addEventListener('click',()=>{if(!lastPrompt)return;const blob=new Blob([lastPrompt],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='prompt_pulse14_motor_ia.txt';a.click();URL.revokeObjectURL(a.href)});
+paleta.addEventListener('input',render);
+render();
+
+const prepareBtnSide=document.getElementById('prepareBtnSide');
+const oldRender=render;
+render=function(){oldRender(); if(prepareBtnSide) prepareBtnSide.disabled=prepareBtn.disabled;};
+if(prepareBtnSide) prepareBtnSide.addEventListener('click',()=>prepareBtn.click());
+render();
+</script>
 </body>
 </html>
