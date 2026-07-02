@@ -45,6 +45,6 @@ jobs:
                   "proyectos/*",
                   "outputs/*"
               ],
-              commit_message="Sincronización desde GitHub mediante hub-sync"
+              commit_message="Sincronización desde GitHub - Agente Pulse14 V11"
           )
           PY

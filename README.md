@@ -10,16 +10,4 @@ pinned: false
 
 # Agente Pulse 14
 
-Módulo validado de preparación de imágenes para el Motor IA Pulse14.
-
-Versión incluida: **V10 restauración funcional basada en V9 validada**.
-
-Funciones actuales:
-
-- Subida de varias imágenes.
-- Reparto automático del 100% entre las imágenes cargadas.
-- Modificación manual de porcentajes sin superar el 100%.
-- Un único botón: **Crear imagen con IA**.
-- Preparación del paquete técnico para el Motor IA.
-- Generación de prompt técnico para bordado, CorelDRAW X7 y Pulse 14.
-
+Versión V11 restaurada: reparto automático de porcentajes y llamada al Motor IA.
