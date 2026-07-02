@@ -6,43 +6,41 @@ colorTo: indigo
 sdk: docker
 app_file: app.py
 pinned: false
+---
 
-# \---Agente Pulse 14 - Módulo 1 Preparación IA v4
+# Agente Pulse 14
 
-Esta versión sustituye la publicada si en Hugging Face no aparece el reparto automático ni el botón para IA.
+Sistema para la transformación inteligente de imágenes orientadas a bordado profesional mediante Inteligencia Artificial.
 
-Incluye:
+## Estado del proyecto
 
-* Subida de varias imágenes.
-* Reparto automático del 100% entre todas las imágenes subidas.
-* Reparto automático al eliminar imágenes.
-* Porcentajes numéricos editables.
-* Bloqueo para que la suma no supere el 100%.
-* Botón **Crear imagen con IA**.
-* Envío real al endpoint `/api/preparar-paquete-ia`.
-* Generación de prompt técnico Pulse 14 y paquete JSON para el futuro motor IA real.
+Actualmente este repositorio contiene el **Módulo 1** del Agente Pulse 14.
 
-## Ejecutar en local
+Funciones disponibles:
 
-```bash
-pip install -r requirements.txt
-uvicorn app:aplicacion --host 0.0.0.0 --port 7860
+- Subida de múltiples imágenes.
+- Asignación automática de porcentajes.
+- Preparación del paquete para el motor IA.
+- Arquitectura preparada para la integración con el Motor IA.
+
+## Estructura
+
+```
+interfaz/
+modulos/
+servidor/
+app.py
+requirements.txt
+Dockerfile
 ```
 
-Después abrir:
+## Próximas fases
 
-```text
-http://localhost:7860
-```
-
-## En Hugging Face Spaces
-
-Sube todos estos archivos respetando la estructura de carpetas. El Space debe arrancar con:
-
-```bash
-uvicorn app:aplicacion --host 0.0.0.0 --port 7860
-```
-
-Si el Space sigue mostrando el interfaz antiguo, revisa que hayas reemplazado `interfaz/index.html`, `interfaz/app.js`, `servidor/aplicacion.py`, `modulos/motor\\\_pulse14.py` y que exista `app.py` en la raíz.
-
-
+- Motor IA
+- Control de calidad
+- Corrección automática
+- Exportación SVG
+- Exportación EMF
+- Exportación EPS
+- Exportación AI
+- Integración Pulse 14
