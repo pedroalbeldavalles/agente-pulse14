@@ -1,8 +1,0 @@
-let currentProject=null;
-const $=id=>document.getElementById(id);
-async function postForm(url,fd){const r=await fetch(url,{method:'POST',body:fd});const d=await r.json();if(!r.ok)throw new Error(d.detail||'Error');return d}
-function show(p){currentProject=p;$('json').textContent=JSON.stringify(p,null,2);$('pid').textContent='Proyecto: '+p.id;$('imagenes').disabled=false;$('subir').disabled=false;$('paquete').disabled=(p.imagenes||[]).length===0;renderGallery(p);if(p.paquete_ia){$('prompt').textContent=p.paquete_ia.prompt}}
-function renderGallery(p){$('galeria').innerHTML='';(p.imagenes||[]).forEach((im,i)=>{const div=document.createElement('div');div.className='card';div.innerHTML=`<img src="${im.url}"><b>${im.archivo_original}</b><br>${im.resolucion.ancho||'?'} × ${im.resolucion.alto||'?'}<br>Aportación: ${(p.porcentajes||[])[i]}%`;$('galeria').appendChild(div)})}
-$('crear').onclick=async()=>{const fd=new FormData();fd.append('nombre',$('nombre').value||'Proyecto Pulse14');show(await postForm('/api/proyecto/crear',fd))};
-$('subir').onclick=async()=>{if(!currentProject)return;const files=[...$('imagenes').files];if(!files.length)return;const fd=new FormData();files.forEach(f=>fd.append('imagenes',f,f.name));show(await postForm(`/api/proyecto/${currentProject.id}/imagenes`,fd));$('imagenes').value=''};
-$('paquete').onclick=async()=>{if(!currentProject)return;const fd=new FormData();fd.append('instrucciones',$('instrucciones').value||'');fd.append('colores_max',$('colores').value||15);const p=await postForm(`/api/proyecto/${currentProject.id}/paquete-ia`,fd);show(p);$('prompt').textContent=p.paquete_ia.prompt};
