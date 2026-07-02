@@ -10,4 +10,4 @@ pinned: false
 
 # Agente Pulse 14
 
-Versión V11 restaurada: reparto automático de porcentajes y llamada al Motor IA.
+Módulo de preparación IA para Pulse 14.
