@@ -1,0 +1,23 @@
+Repositorio final validado para restaurar Agente Pulse 14
+
+Contenido:
+
+.github/workflows/sync-to-huggingface.yml
+.gitattributes
+.gitignore
+Dockerfile
+README.md
+README_MODULO_1.md
+app.py
+requirements.txt
+interfaz/index.html
+servidor/__init__.py
+servidor/aplicacion.py
+modulos/__init__.py
+modulos/motor_pulse14.py
+
+Notas:
+- La interfaz visible debe mostrar: Agente Pulse 14 - V9 Motor IA.
+- Debe existir un único botón: Crear imagen con IA.
+- Al subir imágenes, los porcentajes se reparten automáticamente hasta sumar 100%.
+- GitHub Actions sincroniza con el Space: Pedroalbeldavalles/Agente-Pulse14.
