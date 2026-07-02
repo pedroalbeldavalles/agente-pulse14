@@ -4,7 +4,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from modulos.motor_pulse14 import crear_paquete_ia
 
-app = FastAPI(title='Agente Pulse 14', version='1.9.0')
+app = FastAPI(title='Agente Pulse 14', version='1.8.0')
 app.mount('/interfaz', StaticFiles(directory='interfaz', html=False), name='interfaz')
 
 @app.get('/')
@@ -13,7 +13,7 @@ def inicio():
 
 @app.get('/api/salud')
 def salud():
-    return {'ok': True, 'version': 'v9'}
+    return {'ok': True, 'version': 'v8'}
 
 def parse_porcentajes(texto: str) -> list[float]:
     try:
