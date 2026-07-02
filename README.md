@@ -1,37 +1,57 @@
-# Agente Pulse 14 - Módulo 1 Preparación IA v4
+---
+title: Agente Pulse 14
+emoji: 🧵
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
 
-Esta versión sustituye la publicada si en Hugging Face no aparece el reparto automático ni el botón para IA.
+# Agente Pulse 14
 
-Incluye:
+Sistema para la transformación inteligente de imágenes orientadas a bordado profesional mediante Inteligencia Artificial.
 
-- Subida de varias imágenes.
-- Reparto automático del 100% entre todas las imágenes subidas.
-- Reparto automático al eliminar imágenes.
-- Porcentajes numéricos editables.
-- Bloqueo para que la suma no supere el 100%.
-- Botón **Crear imagen con IA**.
-- Envío real al endpoint `/api/preparar-paquete-ia`.
-- Generación de prompt técnico Pulse 14 y paquete JSON para el futuro motor IA real.
+## Estado del proyecto
 
-## Ejecutar en local
+Actualmente este repositorio contiene el **Módulo 1: Preparación IA**.
 
-```bash
-pip install -r requirements.txt
-uvicorn app:aplicacion --host 0.0.0.0 --port 7860
-```
+Este módulo permite:
 
-Después abrir:
+- Subir varias imágenes.
+- Repartir automáticamente el 100% entre las imágenes cargadas.
+- Modificar porcentajes de forma numérica.
+- Controlar que la suma total sea exactamente 100%.
+- Preparar un paquete técnico para un futuro motor IA.
+- Generar un prompt técnico orientado a CorelDRAW X7, Pulse 14 y bordado.
+
+## Estructura del proyecto
 
 ```text
-http://localhost:7860
+interfaz/
+modulos/
+servidor/
+app.py
+requirements.txt
+Dockerfile
+README.md
+README_MODULO_1.md
 ```
 
-## En Hugging Face Spaces
+## Funcionamiento actual
 
-Sube todos estos archivos respetando la estructura de carpetas. El Space debe arrancar con:
+El botón **Crear imagen con IA** todavía no genera la imagen final.
 
-```bash
-uvicorn app:aplicacion --host 0.0.0.0 --port 7860
-```
+En esta fase prepara y devuelve el paquete que después usará el motor IA real.
 
-Si el Space sigue mostrando el interfaz antiguo, revisa que hayas reemplazado `interfaz/index.html`, `interfaz/app.js`, `servidor/aplicacion.py`, `modulos/motor_pulse14.py` y que exista `app.py` en la raíz.
+## Próximas fases
+
+1. Conexión con motor IA real.
+2. Generación de imagen de alta calidad.
+3. Control de calidad.
+4. Corrección automática.
+5. Exportación SVG.
+6. Exportación EPS.
+7. Exportación AI.
+8. Exportación EMF.
+9. Preparación final para Pulse 14.
