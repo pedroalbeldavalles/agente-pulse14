@@ -1,11 +1,15 @@
-V9 limpia:
-- app.py
-- Dockerfile
-- requirements.txt
-- README.md
-- README_MODULO_1.md
-- interfaz/index.html
-- servidor/__init__.py
-- servidor/aplicacion.py
-- modulos/__init__.py
-- modulos/motor_pulse14.py
+README.md
+README_MODULO_1.md
+app.py
+requirements.txt
+Dockerfile
+interfaz/index.html
+interfaz/app.js
+interfaz/estilos.css
+servidor/__init__.py
+servidor/aplicacion.py
+modulos/__init__.py
+modulos/motor_pulse14.py
+.github/workflows/sync-to-huggingface.yml
+.gitignore
+.gitattributes

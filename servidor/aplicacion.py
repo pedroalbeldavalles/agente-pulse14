@@ -1,24 +1,18 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from modulos.motor_pulse14 import crear_paquete_ia
 
-app = FastAPI(title="Agente Pulse 14", version="1.9.0")
+app = FastAPI(title="Agente Pulse 14", version="1.8.0")
 
 app.mount("/interfaz", StaticFiles(directory="interfaz", html=False), name="interfaz")
 
 
 @app.get("/")
 def inicio():
-    # Redirección con versión para evitar que el navegador o Hugging Face sirvan una pantalla antigua cacheada.
-    return RedirectResponse(url="/interfaz/index.html?v=9", status_code=302)
-
-
-@app.get("/index.html")
-def index_directo():
     return FileResponse(
         "interfaz/index.html",
         headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"},
@@ -27,7 +21,7 @@ def index_directo():
 
 @app.get("/api/salud")
 def salud():
-    return {"ok": True, "version": "v9"}
+    return {"ok": True, "version": "v8"}
 
 
 def parse_porcentajes(texto: str) -> list[float]:
@@ -66,7 +60,13 @@ async def preparar_paquete_ia(
 
     archivos = []
     for im in imagenes:
-        archivos.append((im.filename or "imagen", im.content_type or "", await im.read()))
+        archivos.append(
+            (
+                im.filename or "imagen",
+                im.content_type or "",
+                await im.read(),
+            )
+        )
 
     try:
         return crear_paquete_ia(
@@ -81,4 +81,7 @@ async def preparar_paquete_ia(
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Error preparando paquete IA: {exc}") from exc
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error preparando paquete IA: {exc}",
+        ) from exc
