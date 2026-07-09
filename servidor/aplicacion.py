@@ -1,10 +1,11 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from modulos.motor_pulse14 import crear_paquete_ia
+from modulos.motor_motivos_reales import analizar_imagenes_reales, crear_boceto_desde_motivos
 
 app = FastAPI(title="Agente Pulse 14", version="1.8.0")
 
@@ -85,3 +86,33 @@ async def preparar_paquete_ia(
             status_code=500,
             detail=f"Error preparando paquete IA: {exc}",
         ) from exc
+
+
+@app.post("/api/analizar-biblioteca-real")
+async def analizar_biblioteca_real(
+    imagenes: list[UploadFile] = File(...),
+    porcentajes: str = Form(...),
+    complejidad: str = Form("media"),
+):
+    vals = parse_porcentajes(porcentajes)
+    if len(imagenes) != len(vals):
+        raise HTTPException(status_code=400, detail="El número de imágenes y porcentajes no coincide.")
+    if round(sum(vals), 2) != 100:
+        raise HTTPException(status_code=400, detail="La suma de porcentajes debe ser exactamente 100%.")
+    archivos = []
+    for im in imagenes:
+        archivos.append((im.filename or "imagen", im.content_type or "", await im.read()))
+    try:
+        return analizar_imagenes_reales(archivos, vals, complejidad)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Error analizando motivos reales: {exc}") from exc
+
+
+@app.post("/api/crear-boceto-real")
+async def crear_boceto_real(payload: dict):
+    try:
+        return crear_boceto_desde_motivos(payload.get("analisis_id", ""), payload.get("ids", []))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Error creando boceto: {exc}") from exc

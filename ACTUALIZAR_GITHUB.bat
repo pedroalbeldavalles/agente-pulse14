@@ -1,12 +1,17 @@
 @echo off
-cd /d "C:\Users\pav09\Documents\CHAT GPT\AGENTE PULSE14\REPOSITORIO\agente-pulse14"
+cd /d "%~dp0"
 echo.
-echo Revisando cambios...
+echo === Agente Pulse 14: subir cambios a GitHub ===
+echo.
 git status
 echo.
+set /p MSG=Mensaje del commit: 
+if "%MSG%"=="" set MSG=Motor real de contornos
+
 git add .
-git commit -m "Biblioteca visual de motivos v3"
+git commit -m "%MSG%"
 git push origin main
+
 echo.
-echo Proceso terminado. Revisa si hay errores encima de esta linea.
+echo Si no hay errores, espera 1-3 minutos y recarga Hugging Face.
 pause

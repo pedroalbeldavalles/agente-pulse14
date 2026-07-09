@@ -1,137 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Biblioteca Visual de Motivos - V3</title>
-<style>
-:root{--bg:#f3f5f7;--panel:#fff;--ink:#17212b;--muted:#607080;--border:#d5dce3;--accent:#2f6f4e;--dark:#0d1b2a;--danger:#9c2f2f;--blue:#2f5f8f}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}header{background:var(--dark);color:#fff;padding:16px 22px}header h1{margin:0;font-size:22px}header p{margin:6px 0 0;color:#d6dde5}main{max-width:1400px;margin:18px auto 40px;padding:0 14px}.page{display:none}.page.active{display:block}.panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.05)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.imgbox{border:1px solid var(--border);border-radius:8px;background:#fafafa;height:360px;display:flex;align-items:center;justify-content:center;overflow:hidden}.imgbox img{max-width:100%;max-height:100%;object-fit:contain}.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}button{border:0;border-radius:7px;padding:11px 16px;cursor:pointer;background:var(--accent);color:#fff;font-size:15px}button.secondary{background:var(--blue)}button.danger{background:var(--danger)}button.ghost{background:#e9eef2;color:#17212b}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tab{padding:9px 13px;border:1px solid var(--border);border-radius:999px;background:#fff;cursor:pointer}.tab.active{background:var(--dark);color:#fff;border-color:var(--dark)}.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.metric{background:#f7faf8;border:1px solid #dbe8df;border-radius:9px;padding:12px;text-align:center}.metric b{display:block;font-size:24px;color:var(--accent)}.toolbar{display:grid;grid-template-columns:1fr 220px 220px;gap:10px;margin-bottom:12px}.toolbar input,.toolbar select,textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:7px;font-size:14px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}.card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;position:relative}.card.selected{outline:3px solid var(--accent);border-color:var(--accent)}.thumb{height:150px;background:#fff;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border)}.thumb svg{width:130px;height:130px}.card-body{padding:10px}.card-title{font-weight:bold}.small{font-size:12px;color:var(--muted);line-height:1.35}.pill{display:inline-block;font-size:11px;border-radius:999px;padding:3px 7px;background:#eef3f7;margin:4px 3px 0 0}.pick{position:absolute;top:8px;right:8px;background:#fff;border:1px solid var(--border);border-radius:7px;padding:5px 7px}.layout{display:grid;grid-template-columns:320px 1fr;gap:14px}.side label{display:block;margin:10px 0 5px;font-weight:bold}.side input[type=range]{width:100%}.sketch{min-height:520px;border:2px dashed #b7c1ca;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:auto}.sketch svg{width:95%;max-height:760px}.note{background:#eef6ff;border:1px solid #c8def8;border-radius:8px;padding:10px;color:#17395c}.selected-list{display:flex;gap:8px;flex-wrap:wrap}.selected-chip{background:#eaf4ed;border:1px solid #bdd8c6;border-radius:999px;padding:6px 10px;font-size:13px}.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 10px 10px}.mini-btn{font-size:12px;padding:8px 8px;border-radius:6px}.trash-btn{background:#fff;color:var(--danger);border:1px solid #e0b4b4}.edit-btn{background:#fff;color:var(--blue);border:1px solid #b6c8da}.modify-panel{display:grid;grid-template-columns:180px 1fr;gap:14px;align-items:start}.modify-preview{height:150px;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;background:#fff}.modify-preview svg{width:130px;height:130px}.deleted-note{background:#fff4f4;border:1px solid #e6b8b8;color:#7b2020;border-radius:8px;padding:9px;margin-top:8px}@media(max-width:900px){.grid2,.grid3,.layout,.toolbar,.summary,.modify-panel{grid-template-columns:1fr}.imgbox{height:260px}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agente Pulse 14 - Motor real de contornos</title>
+  <link rel="stylesheet" href="/interfaz/styles.css?v=real1" />
 </head>
 <body>
-<header><h1>Biblioteca Visual de Motivos - V3</h1><p>Selección de elementos detectados antes de crear el boceto de contornos cerrados</p></header>
+<header>
+  <h1>Agente Pulse 14 - Motor real de contornos</h1>
+  <p>Biblioteca visual creada desde las imágenes subidas. Sin iconos simulados.</p>
+</header>
 <main>
-<section id="pageInput" class="page active">
-<div class="panel"><h2>1. Imágenes introducidas</h2><p class="note">Puedes mantener las imágenes de prueba o cargar otras nuevas. Al volver desde el boceto, esta pantalla queda preparada para sustituirlas y repetir el análisis.</p><div class="grid2"><div><h3>Imagen 1</h3><input id="fileImg1" type="file" accept="image/*" onchange="loadLocalImage(this,'img1Preview')"/><div class="imgbox"><img id="img1Preview" src="06ce8e44d89ba4274b912970a1745cb3.jpg" /></div></div><div><h3>Imagen 2</h3><input id="fileImg2" type="file" accept="image/*" onchange="loadLocalImage(this,'img2Preview')"/><div class="imgbox"><img id="img2Preview" src="8596ad669e8f65f374135659862ed6b5 (1).jpg" /></div></div></div><div class="buttons"><button onclick="resetProjectForNewImages();showPage('pageAnalysis')">Analizar elementos</button><button class="ghost" onclick="resetProjectForNewImages()">Limpiar selección y reiniciar</button></div></div>
-</section>
-<section id="pageAnalysis" class="page">
-<div class="panel"><h2>2. Análisis automático de elementos</h2><div class="summary"><div class="metric"><b>11</b>Flores</div><div class="metric"><b>8</b>Hojas</div><div class="metric"><b>4</b>Volutas</div><div class="metric"><b>3</b>Rosetas / marcos</div><div class="metric"><b>5</b>Decorativos</div></div><p class="note">El motor crea una biblioteca temporal. En la siguiente página podrás seleccionar qué elementos quieres integrar en el boceto.</p><div class="buttons"><button class="secondary" onclick="showPage('pageLibrary')">Abrir biblioteca visual</button><button class="ghost" onclick="showPage('pageInput')">Volver</button></div></div>
-</section>
-<section id="pageLibrary" class="page">
-<div class="panel"><h2>3. Biblioteca visual temporal</h2><div class="tabs"><button class="tab active" data-cat="todos">Todos</button><button class="tab" data-cat="flor">Flores</button><button class="tab" data-cat="hoja">Hojas</button><button class="tab" data-cat="voluta">Volutas</button><button class="tab" data-cat="marco">Roseta / marco</button><button class="tab" data-cat="decorativo">Decorativos</button></div><div class="toolbar"><input id="search" placeholder="Buscar: flor roja, hoja dentada, voluta..."/><select id="source"><option value="todos">Todas las imágenes</option><option value="1">Imagen 1</option><option value="2">Imagen 2</option></select><select id="complexity"><option value="todos">Todas las complejidades</option><option value="simple">Simple</option><option value="media">Media</option><option value="alta">Alta</option></select></div><div id="cards" class="cards"></div><div id="deletedInfo" class="deleted-note" style="display:none"></div></div>
-<div class="panel"><h3>Diálogo con el Motor IA para modificar un elemento</h3><div class="modify-panel"><div><div id="modifyPreview" class="modify-preview"><span class="small">Selecciona un elemento</span></div></div><div><p id="modifyTitle" class="small">Elige una flor, hoja, voluta o adorno y pulsa “Modificar”.</p><textarea id="modifyPrompt" rows="4" placeholder="Ejemplo: Simplifica esta flor, hazla con menos pétalos y contornos más cerrados."></textarea><div class="buttons"><button onclick="applyElementModification()">Aplicar modificación IA</button><button class="ghost" onclick="cancelElementModification()">Cancelar</button></div></div></div></div>
-<div class="panel"><h3>Elementos seleccionados para el boceto</h3><div id="selectedList" class="selected-list"></div><div class="buttons"><button onclick="showPage('pageConfig')">Continuar a configuración del boceto</button><button class="ghost" onclick="selectRecommended()">Seleccionar recomendados</button><button class="danger" onclick="clearSelection()">Limpiar selección</button></div></div>
-</section>
-<section id="pageConfig" class="page">
-<div class="panel"><h2>4. Configuración antes del boceto</h2><div class="layout"><div class="side"><label>Complejidad flores</label><select id="flowerComplex"><option>Simple</option><option selected>Media</option><option>Elaborada</option><option>Muy elaborada</option></select><label>Complejidad hojas</label><select id="leafComplex"><option>Simple</option><option selected>Media</option><option>Elaborada</option></select><label>Roseta exterior</label><select id="frameStyle"><option>Sin roseta</option><option>Roseta sencilla</option><option selected>Roseta clásica</option><option>Roseta muy elaborada</option></select><label>Simetría</label><select id="symmetry"><option>Libre</option><option selected>Mixta</option><option>Totalmente simétrica</option></select><label>Instrucciones al motor IA</label><textarea id="instructions" rows="6">Crear un boceto con contornos cerrados. Cada contorno deberá contener un único tono de color en la fase posterior.</textarea><div class="buttons"><button onclick="makeSketch()">Crear boceto de contornos</button><button class="ghost" onclick="showPage('pageLibrary')">Volver a biblioteca</button></div></div><div><h3>Elementos que se integrarán</h3><div id="selectedList2" class="selected-list"></div><p class="note">Regla activa: 1 contorno cerrado = 1 color plano. Si una flor es elaborada, cada pétalo o zona tonal se dividirá en contornos independientes.</p></div></div></div>
-</section>
-<section id="pageSketch" class="page">
-<div class="panel"><h2>5. Primer boceto de contornos cerrados</h2><div id="sketch" class="sketch"></div><p class="note"><b>Biblioteca de contornos:</b> C:\Users\pav09\Documents\CHAT GPT\AGENTE PULSE14\BIBLIOTECA CONTORNOS<br>En HTML local el navegador no puede escribir automáticamente en una carpeta fija sin permiso. Usa “Guardar boceto en carpeta” si tu navegador lo permite, o “Descargar SVG” y guárdalo en esa ruta.</p><div class="buttons"><button>Modificar con instrucciones</button><button class="secondary">Aceptar dibujo base</button><button onclick="saveSketchToFolder()">Guardar boceto en carpeta</button><button onclick="downloadSketch()">Descargar SVG</button><button class="ghost" onclick="showPage('pageConfig')">Volver a configuración</button><button class="danger" onclick="volverYCargarOtraImagen()">Volver y cargar otra imagen</button></div></div>
-</section>
+  <section class="panel" id="fase1">
+    <h2>1. Imágenes introducidas</h2>
+    <div class="row">
+      <label class="filebtn">Seleccionar imágenes<input id="imagenes" type="file" accept="image/*" multiple hidden></label>
+      <button id="analizar" class="primary">Analizar y crear biblioteca visual real</button>
+    </div>
+    <div class="controls">
+      <label>Complejidad de extracción
+        <select id="complejidad">
+          <option value="simple">Simple: menos regiones</option>
+          <option value="media" selected>Media</option>
+          <option value="alta">Alta: más contornos por color</option>
+          <option value="muy_alta">Muy alta: máximo detalle</option>
+        </select>
+      </label>
+    </div>
+    <div id="listaImagenes" class="imagenes"></div>
+    <p class="nota">Los porcentajes deben sumar 100 %. El motor extraerá motivos reales y los convertirá en mini SVG de contornos cerrados.</p>
+  </section>
+
+  <section class="panel oculto" id="fase2">
+    <h2>2. Análisis automático de elementos</h2>
+    <div id="resumen" class="resumen"></div>
+  </section>
+
+  <section class="panel oculto" id="fase3">
+    <h2>3. Biblioteca visual temporal real</h2>
+    <div class="row wrap">
+      <button class="pill active" data-tipo="todos">Todos</button>
+      <button class="pill" data-tipo="flor">Flores</button>
+      <button class="pill" data-tipo="hoja">Hojas</button>
+      <button class="pill" data-tipo="tallo">Tallos</button>
+      <button class="pill" data-tipo="voluta">Volutas</button>
+      <button class="pill" data-tipo="ornamento">Ornamentos</button>
+      <button id="volverCargar" class="secondary">Volver y cargar otra imagen</button>
+    </div>
+    <div class="toolbar">
+      <input id="buscar" placeholder="Buscar: flor roja, hoja, voluta...">
+      <select id="filtroImagen"><option value="todas">Todas las imágenes</option></select>
+      <select id="filtroComplejidad"><option value="todas">Todas las complejidades</option><option>simple</option><option>media</option><option>alta</option></select>
+    </div>
+    <div id="biblioteca" class="grid"></div>
+    <div class="row bottom">
+      <button id="crearBoceto" class="primary">Crear boceto con elementos seleccionados</button>
+      <span id="estadoBiblioteca"></span>
+    </div>
+  </section>
+
+  <section class="panel oculto" id="fase4">
+    <h2>4. Primer boceto de contornos cerrados</h2>
+    <div class="boceto-wrap"><img id="boceto" alt="Boceto SVG"></div>
+    <div class="row">
+      <button id="descargarSvg" class="secondary">Descargar SVG del boceto</button>
+      <button id="volverBiblioteca" class="secondary">Volver a biblioteca</button>
+    </div>
+  </section>
 </main>
-<script>
-const motifs=[
-{id:'F01',cat:'flor',src:'1',name:'Flor central roja',desc:'pétalos grandes, centro complejo',complexity:'alta',rec:true},
-{id:'F02',cat:'flor',src:'1',name:'Rosa azul',desc:'flor lateral de muchos pétalos',complexity:'alta',rec:true},
-{id:'F03',cat:'flor',src:'1',name:'Flor amarilla',desc:'pétalos medios con centro oscuro',complexity:'media',rec:true},
-{id:'F04',cat:'flor',src:'1',name:'Flor morada superior',desc:'pétalos cortos simétricos',complexity:'media',rec:false},
-{id:'F05',cat:'flor',src:'2',name:'Flor rococó central',desc:'estructura simétrica ornamental',complexity:'alta',rec:true},
-{id:'F06',cat:'flor',src:'2',name:'Tulipán decorativo',desc:'capullo abierto lateral',complexity:'media',rec:false},
-{id:'H01',cat:'hoja',src:'1',name:'Hoja dentada grande',desc:'forma natural para ramillete',complexity:'media',rec:true},
-{id:'H02',cat:'hoja',src:'1',name:'Hoja estrecha curva',desc:'relleno entre flores',complexity:'simple',rec:true},
-{id:'H03',cat:'hoja',src:'2',name:'Hoja plumosa',desc:'ornamento exterior',complexity:'alta',rec:true},
-{id:'V01',cat:'voluta',src:'2',name:'Voluta lateral',desc:'curva rococó para marco',complexity:'media',rec:true},
-{id:'V02',cat:'voluta',src:'2',name:'Espiral inferior',desc:'adorno bajo el ramo',complexity:'media',rec:false},
-{id:'M01',cat:'marco',src:'2',name:'Roseta clásica',desc:'marco exterior simétrico',complexity:'alta',rec:true},
-{id:'M02',cat:'marco',src:'1',name:'Marco floral natural',desc:'roseta irregular abierta',complexity:'media',rec:false},
-{id:'D01',cat:'decorativo',src:'2',name:'Cadena de perlas',desc:'guirnalda inferior',complexity:'simple',rec:true},
-{id:'D02',cat:'decorativo',src:'1',name:'Racimo pequeño',desc:'flores de relleno',complexity:'simple',rec:false}
-];
-let selected=new Set(); let deleted=new Set(); let currentCat='todos'; let activeMotif=null;
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);updateSelected();}
-function flowerSVG(seed,cat){
- if(cat==='hoja')return `<svg viewBox="0 0 100 100"><path d="M50 90 C15 55 20 20 52 8 C88 28 82 62 50 90Z" fill="none" stroke="#111" stroke-width="2"/><path d="M50 90 C52 62 52 35 52 8" fill="none" stroke="#111" stroke-width="2"/><path d="M51 62 C35 58 28 49 20 35M52 52 C67 46 76 36 82 25" fill="none" stroke="#111" stroke-width="2"/></svg>`;
- if(cat==='voluta')return `<svg viewBox="0 0 100 100"><path d="M85 80 C40 80 20 40 55 25 C78 15 90 38 70 48 C55 56 45 42 58 35" fill="none" stroke="#111" stroke-width="2"/><path d="M24 75 C40 60 45 48 42 30" fill="none" stroke="#111" stroke-width="2"/></svg>`;
- if(cat==='marco')return `<svg viewBox="0 0 100 100"><path d="M12 82 C18 30 38 12 50 18 C62 12 82 30 88 82" fill="none" stroke="#111" stroke-width="2"/><path d="M25 70 C35 60 45 58 50 65 C55 58 65 60 75 70" fill="none" stroke="#111" stroke-width="2"/></svg>`;
- if(cat==='decorativo')return `<svg viewBox="0 0 100 100"><path d="M10 45 C30 70 70 70 90 45" fill="none" stroke="#111" stroke-width="2"/>${[20,32,44,56,68,80].map(x=>`<circle cx="${x}" cy="${48+Math.abs(x-50)/5}" r="4" fill="none" stroke="#111" stroke-width="2"/>`).join('')}</svg>`;
- return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="8" fill="none" stroke="#111" stroke-width="2"/>${[0,60,120,180,240,300].map(a=>{let r=a*Math.PI/180,x=50+Math.cos(r)*24,y=50+Math.sin(r)*24;return `<path d="M50 50 C${50+Math.cos(r-.35)*16} ${50+Math.sin(r-.35)*16} ${x-10*Math.sin(r)} ${y+10*Math.cos(r)} ${x} ${y} C${x+10*Math.sin(r)} ${y-10*Math.cos(r)} ${50+Math.cos(r+.35)*16} ${50+Math.sin(r+.35)*16} 50 50Z" fill="none" stroke="#111" stroke-width="2"/>`}).join('')}</svg>`;
-}
-function render(){const q=document.getElementById('search').value.toLowerCase();const src=document.getElementById('source').value;const comp=document.getElementById('complexity').value;const cards=document.getElementById('cards');cards.innerHTML='';motifs.filter(m=>!deleted.has(m.id)&&(currentCat==='todos'||m.cat===currentCat)&&(src==='todos'||m.src===src)&&(comp==='todos'||m.complexity===comp)&&(`${m.id} ${m.name} ${m.desc}`.toLowerCase().includes(q))).forEach(m=>{const el=document.createElement('div');el.className='card '+(selected.has(m.id)?'selected':'');el.onclick=()=>{selected.has(m.id)?selected.delete(m.id):selected.add(m.id);render();updateSelected()};el.innerHTML=`<div class="pick"><input type="checkbox" ${selected.has(m.id)?'checked':''}></div><div class="thumb">${flowerSVG(m.id,m.cat)}</div><div class="card-body"><div class="card-title">${m.id} · ${m.name}</div><div class="small">Imagen ${m.src} · ${m.desc}</div><span class="pill">${m.cat}</span><span class="pill">${m.complexity}</span></div><div class="card-actions"><button class="mini-btn edit-btn" onclick="event.stopPropagation();openElementDialog('${m.id}')">Modificar</button><button class="mini-btn trash-btn" onclick="event.stopPropagation();deleteMotif('${m.id}')">🗑 Eliminar</button></div>`;cards.appendChild(el)});updateDeletedInfo();}
-function updateSelected(){const names=[...selected].map(id=>motifs.find(m=>m.id===id)?.id+' · '+motifs.find(m=>m.id===id)?.name);['selectedList','selectedList2'].forEach(id=>{const el=document.getElementById(id); if(!el)return; el.innerHTML=names.length?names.map(n=>`<span class="selected-chip">${n}</span>`).join(''):'<span class="small">No hay elementos seleccionados.</span>'})}
-
-function updateDeletedInfo(){const el=document.getElementById('deletedInfo'); if(!el)return; if(!deleted.size){el.style.display='none';el.textContent='';return;} el.style.display='block'; el.innerHTML=`Elementos eliminados de esta biblioteca temporal: <b>${[...deleted].join(', ')}</b>. <button class="mini-btn ghost" onclick="restoreDeleted()">Restaurar eliminados</button>`;}
-function deleteMotif(id){selected.delete(id); if(activeMotif===id)cancelElementModification(); deleted.add(id); render(); updateSelected();}
-function restoreDeleted(){deleted.clear(); render(); updateSelected();}
-function openElementDialog(id){activeMotif=id; const m=motifs.find(x=>x.id===id); if(!m)return; document.getElementById('modifyPreview').innerHTML=flowerSVG(m.id,m.cat); document.getElementById('modifyTitle').innerHTML=`Elemento activo: <b>${m.id} · ${m.name}</b><br>El Motor IA modificará este motivo manteniendo contornos cerrados y regiones aptas para un solo color.`; document.getElementById('modifyPrompt').value='';}
-function cancelElementModification(){activeMotif=null; const p=document.getElementById('modifyPreview'); if(p)p.innerHTML='<span class="small">Selecciona un elemento</span>'; const t=document.getElementById('modifyTitle'); if(t)t.textContent='Elige una flor, hoja, voluta o adorno y pulsa “Modificar”.'; const ta=document.getElementById('modifyPrompt'); if(ta)ta.value='';}
-function applyElementModification(){if(!activeMotif){alert('Primero selecciona un elemento y pulsa Modificar.');return;} const m=motifs.find(x=>x.id===activeMotif); const prompt=document.getElementById('modifyPrompt').value.trim(); if(!prompt){alert('Escribe la modificación que quieres aplicar al elemento.');return;} m.desc='Modificado por IA: '+prompt; m.name=m.name+' · v2'; if(prompt.toLowerCase().includes('simple'))m.complexity='simple'; if(prompt.toLowerCase().includes('elabor'))m.complexity='alta'; selected.add(m.id); render(); updateSelected(); openElementDialog(m.id); alert('Modificación simulada aplicada al elemento '+m.id+'. En el motor real aquí se regeneraría el SVG del motivo.');}
-function selectRecommended(){motifs.filter(m=>m.rec).forEach(m=>selected.add(m.id));render();updateSelected()}
-function clearSelection(){selected.clear();render();updateSelected()}
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');currentCat=t.dataset.cat;render()});
-['search','source','complexity'].forEach(id=>document.getElementById(id).oninput=render);
-function makeSketch(){document.getElementById('sketch').innerHTML=`<svg viewBox="0 0 1000 620"><g fill="none" stroke="#111" stroke-width="3"><path d="M170 520 C120 320 220 130 420 90"/><path d="M830 520 C880 320 780 130 580 90"/><path d="M180 500 C300 560 700 560 820 500"/><path d="M420 505 C450 545 550 545 580 505"/>${[0,1,2,3,4].map((i)=>`<circle cx="${300+i*100}" cy="${540-25*Math.sin(i)}" r="13"/>`).join('')}<g transform="translate(500 295)">${flowerSVG('x','flor').replace('<svg viewBox="0 0 100 100">','<g transform="scale(2.2) translate(-50 -50)">').replace('</svg>','</g>')}</g><g transform="translate(380 265)">${flowerSVG('x','flor').replace('<svg viewBox="0 0 100 100">','<g transform="scale(1.45) translate(-50 -50)">').replace('</svg>','</g>')}</g><g transform="translate(620 265)">${flowerSVG('x','flor').replace('<svg viewBox="0 0 100 100">','<g transform="scale(1.45) translate(-50 -50)">').replace('</svg>','</g>')}</g><g transform="translate(300 210)">${flowerSVG('x','flor').replace('<svg viewBox="0 0 100 100">','<g transform="scale(1.1) translate(-50 -50)">').replace('</svg>','</g>')}</g><g transform="translate(700 210)">${flowerSVG('x','flor').replace('<svg viewBox="0 0 100 100">','<g transform="scale(1.1) translate(-50 -50)">').replace('</svg>','</g>')}</g>${[330,410,590,670].map(x=>`<g transform="translate(${x} 390) rotate(${x<500?-25:25})">${flowerSVG('h','hoja').replace('<svg viewBox="0 0 100 100">','<g transform="scale(.9) translate(-50 -50)">').replace('</svg>','</g>')}</g>`).join('')}<g transform="translate(210 360) scale(1.7)">${flowerSVG('v','voluta').replace('<svg viewBox="0 0 100 100">','<g transform="translate(-50 -50)">').replace('</svg>','</g>')}</g><g transform="translate(790 360) scale(-1.7 1.7)">${flowerSVG('v','voluta').replace('<svg viewBox="0 0 100 100">','<g transform="translate(-50 -50)">').replace('</svg>','</g>')}</g></g></svg>`;showPage('pageSketch')}
-
-function loadLocalImage(input,imgId){
-  const file=input.files && input.files[0];
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{document.getElementById(imgId).src=e.target.result;};
-  reader.readAsDataURL(file);
-}
-function resetProjectForNewImages(){
-  selected.clear(); deleted.clear(); cancelElementModification();
-  const sketch=document.getElementById('sketch');
-  if(sketch)sketch.innerHTML='';
-  render();
-  updateSelected();
-}
-function volverYCargarOtraImagen(){
-  resetProjectForNewImages();
-  showPage('pageInput');
-}
-function getSketchSVGText(){
-  const svg=document.querySelector('#sketch svg');
-  if(!svg){alert('Primero crea el boceto de contornos.');return null;}
-  const clone=svg.cloneNode(true);
-  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
-  return '<?xml version="1.0" encoding="UTF-8"?>\n'+clone.outerHTML;
-}
-function sketchFileName(){
-  const d=new Date();
-  const pad=n=>String(n).padStart(2,'0');
-  return `boceto_contornos_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}.svg`;
-}
-function downloadSketch(){
-  const txt=getSketchSVGText();
-  if(!txt)return;
-  const blob=new Blob([txt],{type:'image/svg+xml'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=sketchFileName();
-  document.body.appendChild(a);a.click();a.remove();
-  URL.revokeObjectURL(a.href);
-}
-async function saveSketchToFolder(){
-  const txt=getSketchSVGText();
-  if(!txt)return;
-  if(!window.showDirectoryPicker){
-    alert('Este navegador no permite elegir carpeta desde HTML. Se descargará el SVG; guárdalo en C:\\Users\\pav09\\Documents\\CHAT GPT\\AGENTE PULSE14\\BIBLIOTECA CONTORNOS');
-    downloadSketch();
-    return;
-  }
-  try{
-    const dir=await window.showDirectoryPicker({mode:'readwrite'});
-    const fh=await dir.getFileHandle(sketchFileName(),{create:true});
-    const w=await fh.createWritable();
-    await w.write(txt); await w.close();
-    alert('Boceto guardado en la carpeta seleccionada. Selecciona la carpeta BIBLIOTECA CONTORNOS para mantener la biblioteca local.');
-  }catch(e){
-    if(e && e.name!=='AbortError')alert('No se pudo guardar el archivo: '+e.message);
-  }
-}
-
-render();updateSelected();
-</script>
+<script src="/interfaz/app.js?v=real1"></script>
 </body>
 </html>

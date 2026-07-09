@@ -2,7 +2,7 @@
 title: Agente Pulse 14
 emoji: 🧵
 colorFrom: blue
-colorTo: green
+colorTo: indigo
 sdk: docker
 app_file: app.py
 pinned: false
@@ -10,20 +10,6 @@ pinned: false
 
 # Agente Pulse 14
 
-Repositorio para Hugging Face Spaces.
+Motor real inicial para crear una biblioteca visual temporal de motivos desde imágenes subidas.
 
-Versión actual: Biblioteca visual de motivos V3.
-
-Incluye:
-- carga de dos imágenes de referencia;
-- análisis automático simulado de elementos;
-- biblioteca visual temporal;
-- papelera para eliminar motivos;
-- diálogo con Motor IA para modificar un elemento;
-- selección de motivos para el boceto;
-- configuración de complejidad;
-- generación de boceto de contornos cerrados.
-
-Regla principal del motor:
-
-> 1 contorno cerrado = 1 único color plano.
+Esta versión ya no muestra iconos simulados: analiza las imágenes en el servidor, extrae componentes reales, genera contornos SVG y permite seleccionar motivos para crear un primer boceto.
