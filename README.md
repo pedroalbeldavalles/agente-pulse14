@@ -1,3 +1,13 @@
+---
+title: Agente Pulse 14
+emoji: 🧵
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_file: app.py
+pinned: false
+---
+
 # Agente Pulse 14
 
 Repositorio para Hugging Face Spaces.
